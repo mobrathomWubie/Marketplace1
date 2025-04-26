@@ -60,8 +60,7 @@ const BrowseDatasets = () => {
   const allCategories = ['all', ...new Set(datasets.map(dataset => dataset.category))];
 
   const isLoading = status === 'loading';
-
-  return (
+    return (
     <div className="browse-container">
         <h2 className='browse-title'>Browse Datasets</h2>
         <div className="filter-container">

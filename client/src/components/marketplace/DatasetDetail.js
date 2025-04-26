@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaDownload, FaStar, FaRegStar, FaChartLine, FaCalendarAlt, FaGlobe, FaFileAlt, FaUser, FaEnvelope } from 'react-icons/fa';
+import { FaDownload, FaStar, FaRegStar, FaChartLine, FaCalendarAlt, FaGlobe, FaFileAlt, FaUser } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './DatasetDetail.css';
