@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaDownload, FaStar, FaRegStar, FaChartLine, FaCalendarAlt, FaGlobe, FaFileAlt } from 'react-icons/fa';
+import { FaDownload, FaStar, FaRegStar, FaChartLine, FaCalendarAlt, FaGlobe, FaFileAlt, FaUser, FaEnvelope } from 'react-icons/fa';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import './DatasetDetail.css';
-
+import "./DatasetDetail.css"
 const DatasetDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const DatasetDetail = () => {
   const [activeTab, setActiveTab] = useState('description');
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const [showContactForm, setShowContactForm] = useState(false);
 
   // Mock data - replace with API call
   useEffect(() => {
@@ -22,11 +25,12 @@ const DatasetDetail = () => {
         await new Promise(resolve => setTimeout(resolve, 800));
         
         const mockDataset = {
-          id: id,
+          id: id,         
           title: 'Agricultural Yields in East Africa (2023)',
+          subtitle: 'Comprehensive dataset of crop production metrics across 5 East African countries.',
           description: 'Comprehensive dataset of crop production metrics across 5 East African countries. Includes maize, beans, coffee, and tea yields at district level.',
           category: 'Agriculture',
-          price: 0,
+          price: 15,
           currency: 'USD',
           format: 'CSV',
           size: '45.7 MB',
@@ -50,6 +54,7 @@ const DatasetDetail = () => {
             'Rainfall (mm)', 'Fertilizer Use'
           ],
           sampleData: [
+            
             ['Kisumu', 'Kenya', '2022', 'Maize', '2.4', '1200', 'Medium'],
             ['Arusha', 'Tanzania', '2022', 'Beans', '1.2', '950', 'Low'],
             ['Gulu', 'Uganda', '2021', 'Coffee', '0.8', '1500', 'High']
@@ -102,14 +107,39 @@ const DatasetDetail = () => {
     setReview('');
   };
 
-  if (loading) return <div className="loading">Loading dataset details...</div>;
+  const handleContactCreator = () => {
+    setShowContactForm(true);
+  };
+
+  const closeContactForm = () => setShowContactForm(false);
+
+  if (loading) return (
+    <div className="dataset-detail-container">
+      <div className="dataset-header">
+        <Skeleton height={40} width={200} />
+        <Skeleton height={60} />
+        <Skeleton height={30} width={150} />
+      </div>
+      <div className="dataset-meta">
+        {[...Array(5)].map((_, index) => (
+          <Skeleton key={index} height={30} width={150} />
+        ))}
+      </div>
+      <div className="tabs">
+        {[...Array(3)].map((_, index) => (
+          <Skeleton key={index} height={40} width={100} />
+        ))}
+      </div>
+    </div>
+  );
   if (error) return <div className="error">{error}</div>;
-  if (!dataset) return <div className="not-found">Dataset not found</div>;
+  if (!dataset) return <div className="not-found">Dataset not found</div>
 
   return (
     <div className="dataset-detail-container">
       <div className="dataset-header">
         <div className="title-section">
+          <h2>{dataset.subtitle}</h2>
           <h1>{dataset.title}</h1>
           <div className="publisher">
             <span>By {dataset.publisher.name}</span>
@@ -126,7 +156,7 @@ const DatasetDetail = () => {
             )}
           </div>
           {dataset.price === 0 ? (
-            <button onClick={handleDownload} className="download-button">
+             <button onClick={handleDownload} className="download-button">
               <FaDownload /> Download
             </button>
           ) : (
@@ -134,29 +164,32 @@ const DatasetDetail = () => {
               Purchase Dataset
             </button>
           )}
+          {dataset.publisher.name && (
+            <button onClick={handleContactCreator} className="contact-creator-button">Contact Creator</button>
+          )}
         </div>
       </div>
 
       <div className="dataset-meta">
-        <div className="meta-item">
+        <div className="meta-item meta-item-1">
           <FaFileAlt />
           <span>{dataset.format} • {dataset.size}</span>
         </div>
-        <div className="meta-item">
+        <div className="meta-item meta-item-2">
           <FaChartLine />
           <span>{dataset.rows} rows</span>
         </div>
-        <div className="meta-item">
+        <div className="meta-item meta-item-3">
           <FaCalendarAlt />
           <span>Updated: {new Date(dataset.updatedAt).toLocaleDateString()}</span>
         </div>
-        <div className="meta-item">
+        <div className="meta-item meta-item-4">
           <FaGlobe />
           <span>{dataset.region}</span>
         </div>
-        <div className="meta-item rating">
+        <div className="meta-item rating meta-item-5">
           <div className="stars">
-            {[1, 2, 3, 4, 5].map((star) => (
+           {[1, 2, 3, 4, 5].map((star) => (
               star <= Math.floor(dataset.rating) ? 
                 <FaStar key={star} className="filled" /> : 
                 <FaRegStar key={star} />
@@ -191,13 +224,37 @@ const DatasetDetail = () => {
         {activeTab === 'description' && (
           <div className="description-section">
             <p>{dataset.description}</p>
-            
-            <div className="details-grid">
-              <div className="detail-item">
-                <h3>License</h3>
-                <p>{dataset.license}</p>
+           
+             <div className="dataset-info-section">
+          
+          <div className="info-grid">
+              <div className="info-item">
+                  <h3>Creator</h3>
+                  <p>
+                      <FaUser className="info-icon" /> 
+                      {dataset.publisher.name}
+                  </p>
               </div>
-              <div className="detail-item">
+              <div className="info-item">
+                  <h3>Category</h3>
+                  <p>{dataset.category}</p>
+              </div>
+               <div className="info-item">
+                  <h3>Size</h3>
+                  <p>{dataset.size}</p>
+              </div>
+               <div className="info-item">
+                  <h3>Data types</h3>
+                  <p>{dataset.format}</p>
+              </div>
+               <div className="info-item">
+                  <h3>License</h3>
+                  <p>{dataset.license}</p>
+               </div>
+               
+          </div>
+        </div>
+           <div className="details-grid"> <div className="detail-item">
                 <h3>Geographic Coverage</h3>
                 <p>{dataset.coverage}</p>
               </div>
@@ -321,6 +378,29 @@ const DatasetDetail = () => {
           </div>
         </div>
       </div>
+       {showContactForm && (
+          <div className="contact-form-popup">
+            <div className="contact-form-content">
+              <button className="close-button" onClick={closeContactForm}>X</button>
+              <h2>Contact Dataset Creator</h2>
+              <form>
+                <div className="form-group">
+                  <label htmlFor="name">Your Name</label>
+                  <input type="text" id="name" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Your Email</label>
+                  <input type="email" id="email" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="message">Your Message</label>
+                  <textarea id="message" rows="5"></textarea>
+                </div>
+                <button type="submit" className="submit-button">Send Message</button>
+              </form>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

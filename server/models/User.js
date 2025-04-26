@@ -89,6 +89,16 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Automatically set the creation date
   },
+  datasetsCreated: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Dataset',
+    default: [],
+  }],
+  datasetsPurchased: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Dataset',
+    default: [],
+  }],
 });
 
 // Export the model

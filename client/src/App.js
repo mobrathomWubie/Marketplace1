@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
+import './index.css';
+
 // Layout Components
 import Header from './components/Header';
 import Footer from './components/Footer';
