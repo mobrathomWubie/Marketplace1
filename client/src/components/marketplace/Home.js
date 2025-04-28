@@ -1,14 +1,27 @@
 import React from 'react';
 import './Home.css';
+import FeaturedDatasets from './FeaturedDatasets';
+import DatasetCategories from './DatasetCategories';
+import SearchBar from './SearchBar';
+import NewDatasets from './NewDatasets';
+import TrendingDatasets from './TrendingDatasets';
 
+// Home component for the main landing page
 const Home = () => {
   return (
-    <div className="home-container">
-      <main className="main-content">
-        <h1>Welcome to Digital ID</h1>
-        <p>Your secure, blockchain-based digital identification solution.</p>
-      </main>
-  
+    <div className="home">
+      <h1>Home Page</h1>
+      <div className='home-components'>
+      <FeaturedDatasets />
+      </div>
+      <div className='home-components'>
+      <DatasetCategories />
+      </div>
+      <div className='home-components'>
+      <SearchBar />
+      </div>
+      <NewDatasets />
+      <TrendingDatasets />
     </div>
   );
 };
