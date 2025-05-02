@@ -1,120 +1,110 @@
-const Dataset = require('../models/dataset');
-const { generateSlug } = require('../utils/generateSlug');
+import Dataset from '../models/Dataset.js';
 
-exports.uploadDataset = async (req, res) => {
+export const getAllDatasets = async (req, res) => {
   try {
-    const dataset = new Dataset({
-      ...req.body,
-      fileUrl: req.file.path,
-      format: req.file.mimetype,
-      size: req.file.size,
-      publisher: req.user.id,
-      slug: generateSlug(req.body.name),
-      isApproved: req.user.role === 'admin' // Auto-approve admin uploads
-    });
-
-    await dataset.save();
-    res.status(201).json(dataset);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const datasets = await Dataset.find();
+    res.status(200).json(datasets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Get all datasets with filtering, sorting, and search
-exports.getAllDatasets = async (req, res) => {
+export const createDataset = async (req, res) => {
   try {
-    const { category, sortBy, sortOrder, search, page = 1, limit = 10 } = req.query;
-
-    const query = {};
-    if (category) {
-      query.category = category;
-    }
-    if (search) {
-      query.name = { $regex: search, $options: 'i' }; // Case-insensitive search
-    }
-
-    const sort = {};
-    if (sortBy && sortOrder) {
-      sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
-    } else {
-      sort.createdAt = -1; // Default sort by latest
-    }
-
-    const skip = (page - 1) * limit;
-
-    const totalDatasets = await Dataset.countDocuments(query);
-    const datasets = await Dataset.find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(parseInt(limit))
-      .populate('publisher', 'name email');
-
-    res.json({
-      datasets,
-      totalPages: Math.ceil(totalDatasets / limit),
-      currentPage: parseInt(page),
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const newDataset = new Dataset(req.body);
+    const datasets = await newDataset.save();
+    res.status(200).json(datasets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Create a new dataset
-exports.createDataset = async (req, res) => {
+export const getDatasetById = async (req, res) => {
   try {
-    const { name, description, category, dataTypes, size, sampleDataLink } = req.body;
-    const newDataset = new Dataset({
-      name,
-      description,
-      category,
-      dataTypes,
-      size,
-      sampleDataLink,
-      creator: req.user.id, // Assuming you have user authentication
-      slug: generateSlug(name),
-    });
-    await newDataset.save();
-    res.status(201).json(newDataset);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Get a dataset by ID
-exports.getDatasetById = async (req, res) => {
-  try {
-    const dataset = await Dataset.findById(req.params.id).populate('creator', 'name email');
+    const dataset = await Dataset.findById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ message: 'Dataset not found' });
     }
-    res.json(datasets);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(200).json(dataset);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Update a dataset
-exports.updateDataset = async (req, res) => {
+export const getNewDatasets = async (req, res) => {
   try {
-    const dataset = await Dataset.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!dataset) {
-      return res.status(404).json({ message: 'Dataset not found' });
-    }
-    res.json(dataset);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const newDatasets = await Dataset.find().sort({ lastUpdated: -1 }).limit(10);
+    res.status(200).json(newDatasets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Delete a dataset
-exports.deleteDataset = async (req, res) => {
+export const getTrendingDatasets = async (req, res) => {
   try {
-    const dataset = await Dataset.findByIdAndDelete(req.params.id);
-    if (!dataset) {
-      return res.status(404).json({ message: 'Dataset not found' });
-    }
-    res.json({ message: 'Dataset deleted' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const trendingDatasets = await Dataset.find().sort({ views: -1 }).limit(10);
+    res.status(200).json(trendingDatasets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Dataset.distinct('category');
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBestSellingDatasets = async (req, res) => {
+  try {
+    const bestSellingDatasets = await Dataset.find().sort({ sales: -1 }).limit(10);
+    res.status(200).json(bestSellingDatasets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateDataset = async (req, res) => {
+  try {
+    const updatedDataset = await Dataset.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedDataset) {
+      return res.status(404).json({ message: 'Dataset not found' });
+    }
+    res.status(200).json(updatedDataset);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteDataset = async (req, res) => {
+  try {
+    const deletedDataset = await Dataset.findByIdAndDelete(req.params.id);
+    if (!deletedDataset) {
+      return res.status(404).json({ message: 'Dataset not found' });
+    }
+    res.status(200).json({ message: 'Dataset deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBestSellers = async (req, res) => {
+    try {
+      const bestSellers = await Dataset.aggregate([
+        {
+          $group: {
+            _id: '$seller',
+            totalSales: { $sum: '$sales' },
+          },
+        },
+        { $sort: { totalSales: -1 } },
+        { $limit: 10 },
+      ]);
+      res.status(200).json(bestSellers);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };

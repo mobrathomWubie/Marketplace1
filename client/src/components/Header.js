@@ -11,6 +11,12 @@ function Header() {
             <Link to="/" className="nav-link">Home</Link>
           </li>
           <li className="nav-item">
+            <Link to="/featured" className="nav-link">Featured</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/trending" className="nav-link">Trending</Link>
+          </li>
+          <li className="nav-item">
             <Link to="/browse" className="nav-link">Browse Datasets</Link>
           </li>
           <li className="nav-item">
@@ -18,9 +24,6 @@ function Header() {
           </li>
           <li className="nav-item">
             <Link to="/register" className="nav-link">Register</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/admin" className="nav-link">Admin</Link>
           </li>
           <li className="nav-item">
             <Link to="/user" className="nav-link">User</Link>

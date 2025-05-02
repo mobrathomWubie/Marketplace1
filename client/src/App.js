@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
 //Components
@@ -10,12 +9,13 @@ import DatasetDetail from './components/marketplace/DatasetDetail';
 import Login from './components/Login';
 import Register from "./components/Register";
 import PrivateRoute from "./components/PrivateRoute";
-import AdminRoute from "./components/AdminRoute";
-import UserRoute from './components/UserRoute';
 import Admin from './components/Admin';
 import User from './components/User';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cart from './components/marketplace/Cart';
 import Checkout from './components/marketplace/Checkout';
+import FeaturedDatasets from './components/marketplace/FeaturedDatasets';
+import TrendingDatasets from './components/marketplace/TrendingDatasets';
 
 //Styles
 import './App.css';
@@ -32,9 +32,11 @@ function App() {
         <Route path="/dataset/:id" element={<DatasetDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/featured" element={<FeaturedDatasets />} />
+        <Route path="/trending" element={<TrendingDatasets />} />
         {/* Admin and User Protected Routes */}
-        <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
-        <Route path="/user" element={<UserRoute><User /></UserRoute>} />
+        <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
+        <Route path="/user" element={<PrivateRoute><User /></PrivateRoute>} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>

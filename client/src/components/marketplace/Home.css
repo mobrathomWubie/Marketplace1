@@ -1,50 +1,65 @@
 /* Home Page Styles */
 .home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  text-align: center;
-  background-color: #f8f9fa;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #f4f4f4; /* Light gray background for the marketplace */
 }
 
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-h1 {
-  color: #007bff;
-  font-size: 2.5rem;
+/* Each section */
+.section-container {
+  background-color: #fff; /* White background for sections */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 1.5rem;
   margin-bottom: 1rem;
 }
 
-p {
-  font-size: 1.2rem;
+/* Section Title */
+.section-title {
   color: #333;
-  max-width: 600px;
-  line-height: 1.6;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+  text-transform: capitalize;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-content {
-    padding: 1rem;
-  }
-  
-  h1 {
-    font-size: 2rem;
-  }
-  
-  p {
-    font-size: 1rem;
+.section-title:hover{
+  color: #007bff;
+}
+
+/* Dataset list */
+.dataset-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  .home-container {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for tablet */
   }
 }
+
+@media (max-width: 768px) {
+  .home-container {
+      grid-template-columns: 1fr; /* Single column for mobile */
+  }
+
+  .section-container {
+      padding: 1rem;
+  }
+
+  .section-title {
+      font-size: 1.25rem;
+  }
+}
+
 
 @media (max-width: 480px) {
   h1 {

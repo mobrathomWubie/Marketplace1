@@ -1,11 +1,36 @@
 // src/components/marketplace/BrowseDatasets.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import DatasetCard from './DatasetCard';
 
 const BrowseDatasets = () => {
+  const [datasets, setDatasets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/datasets'); 
+        if (!response.ok) {
+          throw new Error('Failed to fetch datasets');
+        }
+        const data = await response.json();
+        setDatasets(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
       <h1>Browse Datasets</h1>
-      <p>This is the Browse Datasets component.</p>
+      {loading && <p>Loading datasets...</p>}
+      {error && <p>Error: {error}</p>}
+      {datasets.map(dataset => <DatasetCard key={dataset._id} dataset={dataset} />)}
     </div>
   );
 };
