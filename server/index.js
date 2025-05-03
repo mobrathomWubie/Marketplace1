@@ -1,18 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import { store } from './app/store';
-import './index.css';
+import express from 'express';
+import cors from 'cors';
+import connectDB from './config/db.js'; // Import database connection
+import userRoutes from './routes/userRoutes.js'; // Import user routes
+import datasetRoutes from './routes/datasetRoutes.js'; // Import dataset routes
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
-);
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Database connection
+(async () => {
+  try {
+      await connectDB();
+      console.log('Connection to the database successful')
+  } catch (error) {
+      console.log('Error connecting to the database', error)
+  }
+})();
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/datasets', datasetRoutes);
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

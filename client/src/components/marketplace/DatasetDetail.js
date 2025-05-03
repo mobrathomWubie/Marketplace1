@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BrowseDatasets.css';
+import Footer from '../Footer';
 
 const DatasetDetail = ({ match }) => {
   const [dataset, setDataset] = useState(null);
@@ -31,6 +32,7 @@ const DatasetDetail = ({ match }) => {
     <div className="dataset-detail-container">
       <h1 className="dataset-detail-title">{dataset.title}</h1>
       <p className="dataset-detail-description">{dataset.description}</p>
+      <Footer />
     </div>
   );
 };

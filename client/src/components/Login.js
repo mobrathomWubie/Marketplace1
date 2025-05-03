@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import Footer from './Footer'; 
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -48,6 +49,7 @@ const Login = () => {
           Login
         </button>
       </form>
+      <Footer/>
     </div>
   );
 };

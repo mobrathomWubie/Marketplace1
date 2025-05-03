@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const datasetController = require('../controllers/datasetControllers');
+import * as datasetController from '../controllers/datasetControllers.js';
 
 router.get('/', datasetController.getAllDatasets);
 router.get('/:id', datasetController.getDatasetById);
@@ -14,6 +14,4 @@ router.put('/:id', datasetController.updateDataset);
 //delete a dataset
 router.delete('/:id', datasetController.deleteDataset);
 
-
-
-module.exports = router;
+export default router;

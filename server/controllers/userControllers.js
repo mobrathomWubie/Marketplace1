@@ -1,10 +1,10 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
+import bcrypt from 'bcrypt';
+import User from '../models/User.js';
 
-exports.createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = new User({ username, password });
+     const user = new User({ username, password });
     await user.save();
     res.status(201).json({ message: 'User created' });
   } catch (error) {
@@ -12,7 +12,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -32,4 +32,3 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Login failed: Internal server error' });
   }
 };
-

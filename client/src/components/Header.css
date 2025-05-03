@@ -1,47 +1,57 @@
+/* Header */
 .header {
-  background-color: #333; /* Dark gray background */
-  color: #fff; /* White text color */
-  padding: 1rem 2rem; /* Add horizontal padding for better spacing */
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slightly darker shadow */
+  position: relative;
+  background-color: white; /* White background */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 10px 20px;
   display: flex;
-  justify-content: center; /* Center the header content horizontally */
+  justify-content: space-between;
   align-items: center;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+}
 .nav-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center; /* Center the list items */
   align-items: center;
-  gap: 2rem; /* Increase gap between items */
+  gap: 1rem;
 }
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0; /* Add some vertical padding to list items */
+.nav-item{
+    padding: 5px;
 }
-
 .nav-link {
   text-decoration: none;
-  color: #fff; /* White text color */
-  font-weight: 500;
-  transition: color 0.3s ease; /* Add a transition for hover effect */
-  padding: 0.5rem 1rem;
-  border-radius: 4px; /* Add some border radius for visual appeal */
+  color: #333; /* Dark grey text color */
+  transition: color 0.3s ease;
 }
-
 .nav-link:hover {
-  color: #ddd; /* Light gray on hover */
-  background-color: #555;
+  color: #ff7f50; /* Accent color on hover */
 }
 
-@media (max-width: 768px) {
-  .nav-list {
-    flex-direction: column;
-    gap: 1rem;
-  }
+/* Search Bar */
+.search-bar-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }

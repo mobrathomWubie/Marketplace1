@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const datasetSchema = new mongoose.Schema({
   name: {
@@ -58,4 +58,4 @@ const datasetSchema = new mongoose.Schema({
 
 const Dataset = mongoose.model('Dataset', datasetSchema);
 
-module.exports = Dataset;
+export default Dataset;

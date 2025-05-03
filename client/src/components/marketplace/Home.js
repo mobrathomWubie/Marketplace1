@@ -22,11 +22,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home">
+      <div className="home">
         <SearchBar />
-      <DatasetCategories categories={categories} />
+        <DatasetCategories categories={categories} />
         <NewDatasets datasets={newDatasets} />
-    </div>
+      </div>
   );
 };
 
